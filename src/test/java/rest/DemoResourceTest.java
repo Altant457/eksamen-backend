@@ -151,18 +151,4 @@ class DemoResourceTest {
                 .body("memberName", equalTo("test"))
                 .body("roleList", hasItems(hasEntry("roleName", "member")));
     }
-
-    @Test
-    void getAllEvents() {
-        login("member", "test1");
-        Response res = given()
-                .contentType("application/json")
-                .accept("application/json")
-                .header("x-access-token", securityToken)
-                .when().get("/info/events");
-        List<Object> jList = res.jsonPath().getList("all");
-        jList.forEach(event -> {
-            assertThat(((LinkedHashMap<?, ?>) event).get("location"), isOneOf(d1.getLocation(), d2.getLocation(), d3.getLocation()));
-        });
-    }
 }

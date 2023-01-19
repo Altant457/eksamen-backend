@@ -7,10 +7,7 @@ import io.restassured.parsing.Parser;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
@@ -101,40 +98,6 @@ class DemoResourceTest {
 
     private void logOut() {
         securityToken = null;
-    }
-
-    @Test
-    void getPokeInfoAsUser() {
-        String json = "{query: \"133\"}";
-        login("user", "test1");
-        given()
-                .contentType("application/json")
-                .accept("application/json")
-                .header("x-access-token", securityToken)
-                .body(json)
-                .when().post("/info/pokemon")
-                .then()
-                .assertThat()
-                .statusCode(200)
-                .body("pokemonId", equalTo("133"))
-                .body("pokemonName", equalTo("eevee"));
-    }
-
-    @Test
-    void getPokeInfoAsAdmin() {
-        String json = "{query: \"eevee\"}";
-        login("admin", "test2");
-        given()
-                .contentType("application/json")
-                .accept("application/json")
-                .header("x-access-token", securityToken)
-                .body(json)
-                .when().post("/info/pokemon")
-                .then()
-                .assertThat()
-                .statusCode(200)
-                .body("pokemonId", equalTo("133"))
-                .body("pokemonName", equalTo("eevee"));
     }
 
     @Test

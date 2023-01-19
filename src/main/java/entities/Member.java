@@ -158,16 +158,6 @@ public class Member implements Serializable {
     return assignments;
   }
 
-  public void addAssignment(Assignment assignment) {
-    this.assignments.add(assignment);
-    assignment.getMembers().add(this);
-  }
-
-  public void removeAssignment(Assignment assignment) {
-    this.assignments.remove(assignment);
-    assignment.getMembers().remove(this);
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -175,12 +165,11 @@ public class Member implements Serializable {
     Member member = (Member) o;
     return memberName.equals(member.memberName) && memberPass.equals(member.memberPass)
             && address.equals(member.address) && phone.equals(member.phone) && email.equals(member.email)
-            && birthYear.equals(member.birthYear) && account.equals(member.account)
-            && roleList.equals(member.roleList) && assignments.equals(member.assignments);
+            && birthYear.equals(member.birthYear) && account.equals(member.account);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(memberName, memberPass, address, phone, email, birthYear, account, roleList, assignments);
+    return Objects.hash(memberName, memberPass, address, phone, email, birthYear, account);
   }
 }

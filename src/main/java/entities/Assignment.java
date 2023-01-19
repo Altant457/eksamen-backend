@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -25,7 +26,7 @@ public class Assignment implements Serializable {
     private String contactInfo;
 
     @ManyToMany(mappedBy = "assignments")
-    private Set<Member> members;
+    private Set<Member> members = new LinkedHashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "dinner_event_id", nullable = false)
@@ -33,12 +34,11 @@ public class Assignment implements Serializable {
 
     public Assignment() {}
 
-    public Assignment(String familyName, String contactInfo, DinnerEvent dinnerEvent) {
+    public Assignment(Member member, String familyName, String contactInfo) {
         this.familyName = familyName;
         this.createDate = java.sql.Date.valueOf(LocalDate.now());
         this.contactInfo = contactInfo;
-        this.dinnerEvent = dinnerEvent;
-        dinnerEvent.getAssignments().add(this);
+        member.getAssignments().add(this);
     }
 
     public Long getId() {
@@ -73,8 +73,30 @@ public class Assignment implements Serializable {
         this.contactInfo = contactInfo;
     }
 
+    public DinnerEvent getDinnerEvent() {
+        return dinnerEvent;
+    }
+
+    public void setDinnerEvent(DinnerEvent dinnerEvent) {
+        this.dinnerEvent = dinnerEvent;
+    }
+
+    public void setMembers(Set<Member> members) {
+        this.members = members;
+    }
+
     public Set<Member> getMembers() {
         return members;
+    }
+
+    public void addMember(Member member) {
+        this.members.add(member);
+        member.getAssignments().add(this);
+    }
+
+    public void removeMember(Member member) {
+        this.members.remove(member);
+        member.getAssignments().remove(this);
     }
 
     @Override
@@ -83,12 +105,11 @@ public class Assignment implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Assignment that = (Assignment) o;
         return id.equals(that.id) && familyName.equals(that.familyName) && createDate.equals(that.createDate)
-                && contactInfo.equals(that.contactInfo) && members.equals(that.members)
-                && dinnerEvent.equals(that.dinnerEvent);
+                && contactInfo.equals(that.contactInfo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, familyName, createDate, contactInfo, members, dinnerEvent);
+        return Objects.hash(id, familyName, createDate, contactInfo);
     }
 }

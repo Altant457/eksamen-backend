@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import entities.Member;
 
+import java.sql.Date;
 import java.util.List;
 import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
@@ -87,7 +88,11 @@ public class DemoResource {
         JsonObject json = JsonParser.parseString(userJSON).getAsJsonObject();
         String username = json.get("userName").getAsString();
         String password = json.get("userPass").getAsString();
-        Member member = new Member(username, password);
+        String address = json.get("street").getAsString();
+        String phone = json.get("phone").getAsString();
+        String email = json.get("email").getAsString();
+        int birthYear = json.get("birthYear").getAsInt();
+        Member member = new Member(username, password, address, phone, email, birthYear);
         Member createdMember = FACADE.createMember(member);
 
         return GSON.toJson(createdMember);

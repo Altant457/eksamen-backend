@@ -8,24 +8,24 @@ import java.util.List;
 
 public class UserPrincipal implements Principal {
 
-  private String username;
+  private String membername;
   private List<String> roles = new ArrayList<>();
 
   /* Create a UserPrincipal, given the Entity class Member*/
   public UserPrincipal(Member member) {
-    this.username = member.getUserName();
+    this.membername = member.getMemberName();
     this.roles = member.getRolesAsStrings();
   }
 
-  public UserPrincipal(String username, String[] roles) {
+  public UserPrincipal(String membername, String[] roles) {
     super();
-    this.username = username;
+    this.membername = membername;
     this.roles = Arrays.asList(roles);
   }
 
   @Override
   public String getName() {
-    return username;
+    return membername;
   }
 
   public boolean isUserInRole(String role) {

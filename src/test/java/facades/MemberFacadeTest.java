@@ -30,7 +30,7 @@ class MemberFacadeTest {
 
     @BeforeEach
     void setUp() {
-        userR = new Role("user");
+        userR = new Role("member");
         adminR = new Role("admin");
         m1 = new Member("member1", "test1");
         m2 = new Member("member2", "test2");

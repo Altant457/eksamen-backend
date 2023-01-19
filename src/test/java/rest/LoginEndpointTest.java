@@ -139,19 +139,19 @@ public class LoginEndpointTest {
 
     @Test
     public void testRestForUser() {
-        login("user", "test1");
+        login("member", "test1");
         given()
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/user").then()
+                .get("/info/member").then()
                 .statusCode(200)
-                .body("msg", equalTo("Hello to Member: user"));
+                .body("msg", equalTo("Hello to Member: member"));
     }
 
     @Test
     public void testAutorizedUserCannotAccesAdminPage() {
-        login("user", "test1");
+        login("member", "test1");
         given()
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
@@ -167,7 +167,7 @@ public class LoginEndpointTest {
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/user").then() //Call Member endpoint as Admin
+                .get("/info/member").then() //Call Member endpoint as Admin
                 .statusCode(401);
     }
 
@@ -191,7 +191,7 @@ public class LoginEndpointTest {
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/user").then()
+                .get("/info/member").then()
                 .statusCode(200)
                 .body("msg", equalTo("Hello to Member: user_admin"));
     }
@@ -202,7 +202,7 @@ public class LoginEndpointTest {
         given()
                 .contentType("application/json")
                 .when()
-                .get("/info/user").then()
+                .get("/info/member").then()
                 .statusCode(403)
                 .body("code", equalTo(403))
                 .body("message", equalTo("Not authenticated - do login"));
@@ -214,7 +214,7 @@ public class LoginEndpointTest {
         given()
                 .contentType("application/json")
                 .when()
-                .get("/info/user").then()
+                .get("/info/member").then()
                 .statusCode(403)
                 .body("code", equalTo(403))
                 .body("message", equalTo("Not authenticated - do login"));

@@ -112,6 +112,6 @@ class DemoResourceTest {
                 .assertThat()
                 .statusCode(200)
                 .body("userName", equalTo("test"))
-                .body("roleList", hasItems(hasEntry("roleName", "user")));
+                .body("roleList", hasItems(hasEntry("roleName", "member")));
     }
 }

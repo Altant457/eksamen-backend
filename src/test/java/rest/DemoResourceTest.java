@@ -133,8 +133,6 @@ class DemoResourceTest {
         securityToken = null;
     }
 
-    //TODO: Fix test to conform to new constructor
-    @Disabled
     @Test
     void createUser() {
         String json = "{\"memberName\": \"test\", \"userPass\": \"1234\", \"street\": \"test street\", \"phone\": \"+45 11 11 11 11\", \"email\": \"test@mail.dk\", \"birthYear\": 1980}";

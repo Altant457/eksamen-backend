@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "dinner_event")
+@Table(name = "dinnerEvent")
 public class DinnerEvent implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

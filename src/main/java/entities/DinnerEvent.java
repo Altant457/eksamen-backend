@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "dinner_event")
+@Table(name = "dinnerEvent")
 public class DinnerEvent implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -90,12 +90,11 @@ public class DinnerEvent implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         DinnerEvent that = (DinnerEvent) o;
         return id.equals(that.id) && time.equals(that.time) && location.equals(that.location)
-                && dish.equals(that.dish) && pricePerPerson.equals(that.pricePerPerson)
-                && assignments.equals(that.assignments);
+                && dish.equals(that.dish) && pricePerPerson.equals(that.pricePerPerson);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, time, location, dish, pricePerPerson, assignments);
+        return Objects.hash(id, time, location, dish, pricePerPerson);
     }
 }

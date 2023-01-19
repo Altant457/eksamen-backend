@@ -140,6 +140,7 @@ class DemoResourceTest {
         given()
                 .contentType("application/json")
                 .accept("application/json")
+                .header("x-access-token", securityToken)
                 .body(json)
                 .when().post("/info/signup")
                 .then()

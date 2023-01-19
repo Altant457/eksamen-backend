@@ -4,9 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import dtos.DinnerEventDTO;
-import dtos.DinnerEventDTOs;
-import entities.DinnerEvent;
 import entities.Member;
 
 import java.sql.Date;
@@ -87,28 +84,18 @@ public class DemoResource {
     @Path("signup")
     @Consumes("application/json")
     @Produces("application/json")
-    @RolesAllowed({"admin"})
     public String createUser(String userJSON) { // input is the body of the request, generated in the frontend
         JsonObject json = JsonParser.parseString(userJSON).getAsJsonObject();
-        String memberName = json.get("memberName").getAsString();
+        String username = json.get("userName").getAsString();
         String password = json.get("userPass").getAsString();
         String address = json.get("street").getAsString();
         String phone = json.get("phone").getAsString();
         String email = json.get("email").getAsString();
         int birthYear = json.get("birthYear").getAsInt();
-        Member member = new Member(memberName, password, address, phone, email, birthYear);
+        Member member = new Member(username, password, address, phone, email, birthYear);
         Member createdMember = FACADE.createMember(member);
 
         return GSON.toJson(createdMember);
-    }
-
-    @GET
-    @Path("events")
-    @Produces("application/json")
-    @RolesAllowed({"admin", "member"})
-    public String getAllEvents() {
-        List<DinnerEvent> dinnerEvents = FACADE.getAllEvents();
-        return GSON.toJson(new DinnerEventDTOs(dinnerEvents));
     }
 
 }

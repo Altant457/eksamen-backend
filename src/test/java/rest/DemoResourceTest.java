@@ -1,7 +1,7 @@
 package rest;
 
 import entities.Role;
-import entities.User;
+import entities.Member;
 import io.restassured.RestAssured;
 import io.restassured.parsing.Parser;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -61,21 +61,21 @@ class DemoResourceTest {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            em.createQuery("delete from User").executeUpdate();
+            em.createQuery("delete from Member").executeUpdate();
             em.createQuery("delete from Role").executeUpdate();
 
-            Role userRole = new Role("user");
+            Role userRole = new Role("member");
             Role adminRole = new Role("admin");
-            User user = new User("user", "test1");
-            user.addRole(userRole);
-            User admin = new User("admin", "test2");
+            Member member = new Member("member", "test1");
+            member.addRole(userRole);
+            Member admin = new Member("admin", "test2");
             admin.addRole(adminRole);
-            User both = new User("user_admin", "test3");
+            Member both = new Member("user_admin", "test3");
             both.addRole(userRole);
             both.addRole(adminRole);
             em.persist(userRole);
             em.persist(adminRole);
-            em.persist(user);
+            em.persist(member);
             em.persist(admin);
             em.persist(both);
             em.getTransaction().commit();

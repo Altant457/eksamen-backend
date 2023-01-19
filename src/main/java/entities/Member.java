@@ -18,7 +18,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 @Entity
 @Table(name = "users")
-public class  User implements Serializable {
+public class Member implements Serializable {
 
   private static final long serialVersionUID = 1L;
   @Id
@@ -38,35 +38,27 @@ public class  User implements Serializable {
   @ManyToMany
   private List<Role> roleList = new ArrayList<>();
 
+  public Member() {}
+
+  public Member(String userName, String userPass) {
+    this.userName = userName;
+    this.userPass = BCrypt.hashpw(userPass, BCrypt.gensalt());
+  }
+
   public List<String> getRolesAsStrings() {
     if (roleList.isEmpty()) {
       return null;
     }
     List<String> rolesAsStrings = new ArrayList<>();
     roleList.forEach((role) -> {
-        rolesAsStrings.add(role.getRoleName());
-      });
+      rolesAsStrings.add(role.getRoleName());
+    });
     return rolesAsStrings;
   }
 
-  public User() {}
-
-  //TODO Change when password is hashed
-
-   public boolean verifyPassword(String pw){
-        return(BCrypt.checkpw(pw, this.userPass));
-    }
-//   public boolean verifyPassword(String pw){
-//        return pw.equals(this.userPass);
-//    }
-
-  //TODO add extra userpass and check if alike
-  public User(String userName, String userPass) {
-    this.userName = userName;
-
-    this.userPass = BCrypt.hashpw(userPass, BCrypt.gensalt());
+  public boolean verifyPassword(String pw) {
+    return BCrypt.checkpw(pw, this.userPass);
   }
-
 
   public String getUserName() {
     return userName;
@@ -100,8 +92,8 @@ public class  User implements Serializable {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    User user = (User) o;
-    return userName.equals(user.userName) && userPass.equals(user.userPass) && roleList.equals(user.roleList);
+    Member member = (Member) o;
+    return userName.equals(member.userName) && userPass.equals(member.userPass) && roleList.equals(member.roleList);
   }
 
   @Override

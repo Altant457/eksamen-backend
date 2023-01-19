@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import entities.User;
+import entities.Member;
 
 import java.util.List;
 import javax.annotation.security.DeclareRoles;
@@ -18,7 +18,7 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
 
-import facades.UserFacade;
+import facades.MemberFacade;
 import utils.EMF_Creator;
 
 
@@ -26,7 +26,7 @@ import utils.EMF_Creator;
  * @author lam@cphbusiness.dk
  */
 @Path("info")
-@DeclareRoles({"user", "admin"})
+@DeclareRoles({"member", "admin"})
 public class DemoResource {
 
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
@@ -36,7 +36,7 @@ public class DemoResource {
     @Context
     SecurityContext securityContext;
 
-    private static final UserFacade FACADE = UserFacade.getUserFacade(EMF);
+    private static final MemberFacade FACADE = MemberFacade.getUserFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @GET
@@ -53,30 +53,12 @@ public class DemoResource {
 
         EntityManager em = EMF.createEntityManager();
         try {
-            TypedQuery<User> query = em.createQuery("select u from User u", entities.User.class);
-            List<User> users = query.getResultList();
-            return "[" + users.size() + "]";
+            TypedQuery<Member> query = em.createQuery("select m from Member m", Member.class);
+            List<Member> members = query.getResultList();
+            return "[" + members.size() + "]";
         } finally {
             em.close();
         }
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("user")
-    @RolesAllowed({"user"})
-    public String getFromUser() {
-        String thisuser = securityContext.getUserPrincipal().getName();
-        return "{\"msg\": \"Hello to User: " + thisuser + "\"}";
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("admin")
-    @RolesAllowed({"admin"})
-    public String getFromAdmin() {
-        String thisuser = securityContext.getUserPrincipal().getName();
-        return "{\"msg\": \"Hello to (admin) User: " + thisuser + "\"}";
     }
 
     @POST
@@ -87,11 +69,10 @@ public class DemoResource {
         JsonObject json = JsonParser.parseString(userJSON).getAsJsonObject();
         String username = json.get("userName").getAsString();
         String password = json.get("userPass").getAsString();
-        User user = new User(username, password);
-        User createdUser = FACADE.createUser(user);
+        Member member = new Member(username, password);
+        Member createdMember = FACADE.createMember(member);
 
-        return GSON.toJson(createdUser);
-
+        return GSON.toJson(createdMember);
     }
 
 }

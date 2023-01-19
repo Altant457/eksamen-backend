@@ -1,6 +1,6 @@
 package rest;
 
-import entities.User;
+import entities.Member;
 import entities.Role;
 
 import io.restassured.RestAssured;
@@ -18,7 +18,6 @@ import static org.hamcrest.Matchers.equalTo;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import utils.EMF_Creator;
 
@@ -66,21 +65,21 @@ public class LoginEndpointTest {
         try {
             em.getTransaction().begin();
             //Delete existing users and roles to get a "fresh" database
-            em.createQuery("delete from User").executeUpdate();
+            em.createQuery("delete from Member").executeUpdate();
             em.createQuery("delete from Role").executeUpdate();
 
-            Role userRole = new Role("user");
+            Role memberRole = new Role("member");
             Role adminRole = new Role("admin");
-            User user = new User("user", "test");
-            user.addRole(userRole);
-            User admin = new User("admin", "test");
+            Member member = new Member("member", "test1");
+            member.addRole(memberRole);
+            Member admin = new Member("admin", "test2");
             admin.addRole(adminRole);
-            User both = new User("user_admin", "test");
-            both.addRole(userRole);
+            Member both = new Member("user_admin", "test3");
+            both.addRole(memberRole);
             both.addRole(adminRole);
-            em.persist(userRole);
+            em.persist(memberRole);
             em.persist(adminRole);
-            em.persist(user);
+            em.persist(member);
             em.persist(admin);
             em.persist(both);
             //System.out.println("Saved test data to database");
@@ -127,7 +126,7 @@ public class LoginEndpointTest {
 
     @Test
     public void testRestForAdmin() {
-        login("admin", "test");
+        login("admin", "test2");
         given()
                 .contentType("application/json")
                 .accept(ContentType.JSON)
@@ -135,24 +134,24 @@ public class LoginEndpointTest {
                 .when()
                 .get("/info/admin").then()
                 .statusCode(200)
-                .body("msg", equalTo("Hello to (admin) User: admin"));
+                .body("msg", equalTo("Hello to (admin) Member: admin"));
     }
 
     @Test
     public void testRestForUser() {
-        login("user", "test");
+        login("user", "test1");
         given()
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
                 .when()
                 .get("/info/user").then()
                 .statusCode(200)
-                .body("msg", equalTo("Hello to User: user"));
+                .body("msg", equalTo("Hello to Member: user"));
     }
 
     @Test
     public void testAutorizedUserCannotAccesAdminPage() {
-        login("user", "test");
+        login("user", "test1");
         given()
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
@@ -163,18 +162,18 @@ public class LoginEndpointTest {
 
     @Test
     public void testAutorizedAdminCannotAccesUserPage() {
-        login("admin", "test");
+        login("admin", "test2");
         given()
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/user").then() //Call User endpoint as Admin
+                .get("/info/user").then() //Call Member endpoint as Admin
                 .statusCode(401);
     }
 
     @Test
     public void testRestForMultiRole1() {
-        login("user_admin", "test");
+        login("user_admin", "test3");
         given()
                 .contentType("application/json")
                 .accept(ContentType.JSON)
@@ -182,19 +181,19 @@ public class LoginEndpointTest {
                 .when()
                 .get("/info/admin").then()
                 .statusCode(200)
-                .body("msg", equalTo("Hello to (admin) User: user_admin"));
+                .body("msg", equalTo("Hello to (admin) Member: user_admin"));
     }
 
     @Test
     public void testRestForMultiRole2() {
-        login("user_admin", "test");
+        login("user_admin", "test3");
         given()
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
                 .when()
                 .get("/info/user").then()
                 .statusCode(200)
-                .body("msg", equalTo("Hello to User: user_admin"));
+                .body("msg", equalTo("Hello to Member: user_admin"));
     }
 
     @Test

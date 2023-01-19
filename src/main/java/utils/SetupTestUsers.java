@@ -18,7 +18,7 @@ public class SetupTestUsers {
     // This breaks one of the MOST fundamental security rules in that it ships with default users and passwords
     // CHANGE the three passwords below, before you uncomment and execute the code below
     // Also, either delete this file, when users are created or rename and add to .gitignore
-    // Whatever you do DO NOT COMMIT and PUSH with the real passwords
+    // Whatever you do, DO NOT COMMIT and PUSH with the real passwords
 
     Member member = new Member("member", "As123456", "Test Street 4", "+45 11 22 33 44", "member@mail.dk", 1996);
     Member admin = new Member("admin", "JK123456", "Admin Street 2", "+45 22 33 44 11", "admin@mail.dk", 2001);

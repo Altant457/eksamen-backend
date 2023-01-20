@@ -158,9 +158,28 @@ class DemoResourceTest {
                 .accept("application/json")
                 .header("x-access-token", securityToken)
                 .when().get("/info/events");
+        res.then().assertThat().statusCode(200);
         List<Object> jList = res.jsonPath().getList("all");
         jList.forEach(event -> {
             assertThat(((LinkedHashMap<?, ?>) event).get("location"), isOneOf(d1.getLocation(), d2.getLocation(), d3.getLocation()));
         });
+    }
+
+    @Test
+    void createEvent() {
+        String json = "{\"time\": \"2023-01-23 18:00:00\", \"location\": \"testLoc\", \"dish\": \"testDish\", \"pricePerPerson\": 59.95}";
+        login("admin", "test2");
+        given()
+                .contentType("application/json")
+                .accept("application/json")
+                .header("x-access-token", securityToken)
+                .body(json)
+                .when().post("/info/event/add")
+                .then()
+                .assertThat()
+                .statusCode(200)
+                .body("location", equalTo("testLoc"))
+                .body("assignments", equalTo(0));
+
     }
 }

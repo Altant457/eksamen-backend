@@ -4,14 +4,18 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import dtos.DinnerEventDTO;
 import dtos.DinnerEventDTOs;
 import entities.DinnerEvent;
 import entities.Member;
 
+import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
+import javax.persistence.Column;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
@@ -108,6 +112,21 @@ public class DemoResource {
     public String getAllEvents() {
         List<DinnerEvent> dinnerEvents = FACADE.getAllEvents();
         return GSON.toJson(new DinnerEventDTOs(dinnerEvents));
+    }
+
+    @POST
+    @Path("event/add")
+    @Produces("application/json")
+    @Consumes("application/json")
+    @RolesAllowed({"admin"})
+    public String createEvent(String eventJSON) {
+        JsonObject json = JsonParser.parseString(eventJSON).getAsJsonObject();
+        String time = json.get("time").getAsString();
+        String location = json.get("location").getAsString();
+        String dish = json.get("dish").getAsString();
+        double pricePerPerson = json.get("pricePerPerson").getAsDouble();
+        DinnerEvent newEvent = FACADE.createEvent(new DinnerEvent(Timestamp.valueOf(time), location, dish, new BigDecimal(pricePerPerson)));
+        return GSON.toJson(new DinnerEventDTO(newEvent));
     }
 
 }

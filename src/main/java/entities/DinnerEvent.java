@@ -89,12 +89,12 @@ public class DinnerEvent implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DinnerEvent that = (DinnerEvent) o;
-        return id.equals(that.id) && time.equals(that.time) && location.equals(that.location)
+        return time.equals(that.time) && location.equals(that.location)
                 && dish.equals(that.dish) && pricePerPerson.equals(that.pricePerPerson);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, time, location, dish, pricePerPerson);
+        return Objects.hash(time, location, dish, pricePerPerson);
     }
 }

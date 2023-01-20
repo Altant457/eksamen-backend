@@ -19,8 +19,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MemberFacadeTest {
@@ -105,5 +104,11 @@ class MemberFacadeTest {
     void getAllEvents() {
         List<DinnerEvent> actualList = facade.getAllEvents();
         assertThat(actualList, containsInAnyOrder(d1, d2, d3));
+    }
+
+    @Test
+    void createEvent() {
+        DinnerEvent actualEvent = facade.createEvent(new DinnerEvent(Timestamp.valueOf("2023-01-20 20:00:00"), "TestCity", "TestDish", new BigDecimal(50)));
+        assertThat(actualEvent.getId(), notNullValue());
     }
 }

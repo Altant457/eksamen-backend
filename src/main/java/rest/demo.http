@@ -1,4 +1,4 @@
-POST http://localhost:8080/CA2_backend_G_war_exploded/api/login
+POST http://localhost:8080/exam/api/login
 Content-Type: application/json
 
 {
@@ -6,21 +6,21 @@ Content-Type: application/json
   "password": "JK123456"
 }
 ###
-GET http://localhost:8080/CA2_backend_G_war_exploded/api/info/admin
+GET http://localhost:8080/exam/api/info/admin
 X-Access-Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjoiYWRtaW4iLCJleHAiOjE2NjcyOTk5NzEsImlhdCI6MTY2NzI5ODE3MSwiaXNzdWVyIjoic2VtZXN0ZXJzdGFydGNvZGUtZGF0MyIsInVzZXJuYW1lIjoiYWRtaW4ifQ.TOIzMcm5xiGfORrc8Egv_v3--4a4jtdY355OQ6v2nfA
 
-### query is a string caontaining either the id of a pokémon or it's name
-POST http://localhost:8080/CA2_backend_G_war_exploded/api/info/pokemon
+###
+GET http://localhost:8080/exam/api/info/events
+X-Access-Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjoiYWRtaW4iLCJleHAiOjE2NzQxNzc5ODEsImlhdCI6MTY3NDE3NjE4MSwiaXNzdWVyIjoic2VtZXN0ZXJzdGFydGNvZGUtZGF0MyIsInVzZXJuYW1lIjoiYWRtaW4ifQ.Ye0wmuVWnTpRs5J2LFeiAUWekhe16RlennhXxGRcDfQ
+
+###
+POST http://localhost:8080/exam/api/info/event/add
+X-Access-Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjoiYWRtaW4iLCJleHAiOjE2NzQxNzc5ODEsImlhdCI6MTY3NDE3NjE4MSwiaXNzdWVyIjoic2VtZXN0ZXJzdGFydGNvZGUtZGF0MyIsInVzZXJuYW1lIjoiYWRtaW4ifQ.Ye0wmuVWnTpRs5J2LFeiAUWekhe16RlennhXxGRcDfQ
 Content-Type: application/json
 
 {
-  "query": "133"
-}
-
-### deckSize is clamped in frontend to be be a whole number from 1 to 10 inclusive
-POST http://localhost:8080/CA2_backend_G_war_exploded/api/info/pokemondeck
-Content-Type: application/json
-
-{
-"deckSize": "10"
+  "time": "2023-01-24 18:30:00",
+  "location": "149 Erming Ln, Memphis, TN 38101",
+  "dish": "Lasagne",
+  "pricePerPerson": 60
 }

@@ -73,4 +73,16 @@ public class MemberFacade {
             em.close();
         }
     }
+
+    public DinnerEvent createEvent(DinnerEvent event) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.persist(event);
+            em.getTransaction().commit();
+            return event;
+        } finally {
+            em.close();
+        }
+    }
 }
